@@ -2,7 +2,7 @@
 
 start_time=$(date +%s) #Start time
 
-echo "======================= + Take the Backup before starting the Script + ========================="
+#Taking the Backup before starting the Script.
 
 sudo cp /etc/login.defs /etc/login_backup_file.defs
 
@@ -22,21 +22,13 @@ cp /etc/issue /etc/issue_backup_file
 
 cp /etc/issue.net /etc/issue_backup_file.net
 
-echo "************************************ + Ubuntu Hardening Automation Started + **************************************"
-
-echo "################################ + Perform Update and Upgrade opertaions in ubuntu + ################################"
-
-echo "========================== + Updating + ============================"
+#Perform Update and Upgrade opertaions in ubuntu
 
 sudo apt update -y
 
-echo "=========================== + Upgrading + ==========================="
-
 sudo apt upgrade -y
 
-echo "============ + Install debsums utility for the verification of packages with a known good database + ============="
-
-#sudo DEBIAN_FRONTEND=noninteractive apt install -y debsums
+#Install debsums utility for the verification of packages with a known good database 
 
 if dpkg -l | grep -q 'ii  debsums'; then
     echo "debsums is already installed."
@@ -46,9 +38,7 @@ else
     echo "debsums has been installed."
 fi
 
-echo "=================== + Install the malware Scanner rkhunter + ================="
-
-#sudo DEBIAN_FRONTEND=noninteractive apt install -y rkhunter 
+#Install the malware Scanner rkhunter
 
 if dpkg -l | grep -q 'ii  rkhunter'; then
     echo "rkhunter is already installed."
@@ -74,9 +64,7 @@ fi
 
 #chrootkit -q--> Scan Only infected
 
-echo "================ + Perform Installation of apt-show-versions + ===================="
-
-#sudo DEBIAN_FRONTEND=noninteractive apt -y install apt-show-versions
+#Perform Installation of apt-show-versions
 
 if dpkg -l | grep -q 'ii  apt-show-versions'; then
     echo "apt-show-versions is already installed."
@@ -86,7 +74,7 @@ else
     echo "apt-show-versions has been installed."
 fi
 
-echo "======================= + Installation Start File Integrity tool Aide We need to follow below + ====================="
+#Installation Start File Integrity tool Aide We need to follow below
 
 #sudo DEBIAN_FRONTEND=noninteractive apt-get install -y aide
 
@@ -98,17 +86,15 @@ else
     echo "aide has been installed."
 fi
 
-echo "============================= Version of Aide ==============================================="
+#Version of Aide 
 
 sudo aide -v
 
-echo "============================= + Cretaing AIDE Database It Takes time more than 5 min + ============================="
+#Cretaing AIDE Database It Takes time more than 7 min
 
 sudo aideinit
 
-echo "========================== End File Intergity Installation Tool AIDE =================================="
-
-echo "================================ + Instalation Start Automation Tool cfEngine + ====================================="
+#Instalation Start Automation Tool cfEngine
 
 #wget -O- http://cfengine.package-repos.s3.amazonaws.com/quickinstall/quick-install-cfengine-community.sh | sudo bash
 
@@ -120,7 +106,7 @@ else
     echo "CFEngine Community has been installed."
 fi
 
-echo "=============== + for Enable Process Accounting we need to Install acct + ===================="
+#for Enable Process Accounting we need to Install acct
 
 #sudo DEBIAN_FRONTEND=noninteractive apt install acct -y
 
@@ -135,8 +121,7 @@ fi
 
 sudo /usr/sbin/accton on
 
-echo "=================== + Installation start sysstat + ====================================================================="
-
+#Installation start sysstat
 #sudo DEBIAN_FRONTEND=noninteractive apt install sysstat -y
 
 # Check and install sysstat
@@ -156,7 +141,7 @@ sudo systemctl enable sysstat
 
 sudo systemctl start sysstat
 
-echo "========================= + Start Disabling the Protocols like dccp,sctp,tipc,rds + ==========================="
+#Start Disabling the Protocols like dccp,sctp,tipc,rds
 
 sudo cat <<EOF > /etc/modprobe.d/dccp.conf
 install dccp /bin/true
@@ -182,15 +167,11 @@ EOF
 
 chmod +x /etc/modprobe.d/tipc.conf
 
-echo "============================ + End Protocol Disabling + ============================================================"
-
-echo "============================ + Start Disabling the USB Storage + ====================================================="
+#Start Disabling the USB Storage
 
 echo "blacklist usb-storage" >> /etc/modprobe.d/blacklist.conf
 
-echo "============================ + End USB Disable Success + ============================================================="
-
-echo "============================= + Consider hardening SSH configuration + ============================================"
+#Consider hardening SSH configuration
 
 echo "AllowTcpForwarding no" >> /etc/ssh/sshd_config
 
@@ -212,108 +193,6 @@ sed -i '/X11Forwarding yes/s/^/#/g' /etc/ssh/sshd_config
 
 echo "X11Forwarding no" >> /etc/ssh/sshd_config
 
-echo "============================= + SSH Configuration Added Successfully + =========================================================================="
-
-#echo "======================== + Disabling Core Dumps + =========================================="
-
-#echo "* hard core 0
-#* soft core 0" >> /etc/security/limits.conf
-
-#echo "fs.suid_dumpable=0
-#kernel.core_pattern=|/bin/false" >> /etc/sysctl.conf
-
-#echo "=============================== + command to activate changes + =========================================="
-
-#sudo sysctl -p /etc/sysctl.conf
-
-#echo "============================== + Core Dumps Is Disabled Successfully + ===================================="
-
-echo "=============================== + Install apparmor + ==================================================="
-
-#sudo DEBIAN_FRONTEND=noninteractive apt install apparmor-profiles apparmor-utils -y
-
-if dpkg -l | grep -q 'ii  apparmor-profiles' && dpkg -l | grep -q 'ii  apparmor-utils'; then
-    echo "apparmor-profiles and apparmor-utils are already installed."
-else
-    echo "apparmor-profiles and apparmor-utils are not installed. Installing now..."
-    sudo DEBIAN_FRONTEND=noninteractive apt install -y apparmor-profiles apparmor-utils
-    echo "apparmor-profiles and apparmor-utils have been installed."
-fi
-
-echo "=============================== + Enable App Armor Profile + ============================================"
-
-sudo aa-enforce /etc/apparmor.d/*
-
-echo "================================ + App Armor Installed Successfully + ==================================="
-
-echo "=================== + Changing 022 to 027 UMASK Value + ============================="
-
-sed -i 's/UMASK.*/UMASK            027/' /etc/login.defs
-
-echo "================== + Umask Value Change Successfully + ===================================="
-
-echo "Change the Pass_Max_Days Value from 99999 to 120 days"
-
-echo "====================== + Changing the Pass Max Days value + ================================="
-
-sed -i 's/PASS_MAX_DAYS.*/PASS_MAX_DAYS   120/' /etc/login.defs
-
-echo "================== + Pass Max Days Value Change Successfully + ===================================="
-
-echo "Change the Pass_Min_Days Value from 0 to 30 days"
-
-echo "========================= + Changing the Pass_Min Days Value + ============================== "
-
-sed -i 's/PASS_MIN_DAYS.*/PASS_MIN_DAYS   15/' /etc/login.defs
-
-echo "================== + Pass Min Days Value Change Successfully + ==================================="
-
-echo "Change the Hashing round SHA_CRYPT_MAX_ROUNDS value from 5000 to 88888888"
-
-echo "==================== + Put SHA_CRYPT_MAX_ROUNDS and SHA_CRYPT_MIN_ROUNDS Value 5000 to Any + ===================="
-
-echo "SHA_CRYPT_MAX_ROUNDS 88888888" >> /etc/login.defs
-
-echo "SHA_CRYPT_MIN_ROUNDS 88888888" >> /etc/login.defs
-
-echo "============================== + Hashing Round Value Updated Successfully + =========================="
-
-echo "=================================== + Set the Password Expiry + ============================================="
-
-chage -M 150 $(whoami)
-
-chage -m 6 $(whoami)
-
-chage -E 2023-06-05 $(whoami)
-
-chage -I 8 $(whoami)
-
-chage -l $(whoami)
-
-useradd -D -f 30
-
-chage --inactive 30 $(whoami)
-
-echo "============================= + Wazua Failed testcases + ====================================="
-
-echo "============================== + Remove DHCP Installed + ======================================"
-
-sudo DEBIAN_FRONTEND=noninteractive apt purge isc-dhcp-server -y
-
-echo "============================= + Remove Telnet installed + ======================================="
-
-sudo DEBIAN_FRONTEND=noninteractive apt purge telnet -y
-
-echo "=========================== + Run the following command to remove the rsync package + ==============="
-
-sudo DEBIAN_FRONTEND=noninteractive apt purge rsync -y
-
-#echo "=============== + Ensure rsyslog is installed. + ================"
-
-#sudo DEBIAN_FRONTEND=noninteractive apt install rsyslog -y
-
-echo "============================== + Make Changes into sshd_config File + ====================================="
-
 echo "PermitRootLogin no" >> /etc/ssh/sshd_config
 
 echo "ClientAliveInterval 300" >> /etc/ssh/sshd_config
@@ -331,12 +210,87 @@ chown root:root /etc/ssh/sshd_config
 chmod og-rwx /etc/ssh/sshd_config
 
 service sshd reload
+
+#Disabling Core Dumps
+
+echo "* hard core 0
+* soft core 0" >> /etc/security/limits.conf
+
+echo "fs.suid_dumpable=0
+kernel.core_pattern=|/bin/false" >> /etc/sysctl.conf
+
+#command to activate changes
+
+sudo sysctl -p /etc/sysctl.conf
+
+#Install apparmor and configure 
+#sudo DEBIAN_FRONTEND=noninteractive apt install apparmor-profiles apparmor-utils -y
+
+if dpkg -l | grep -q 'ii  apparmor-profiles' && dpkg -l | grep -q 'ii  apparmor-utils'; then
+    echo "apparmor-profiles and apparmor-utils are already installed."
+else
+    echo "apparmor-profiles and apparmor-utils are not installed. Installing now..."
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y apparmor-profiles apparmor-utils
+    echo "apparmor-profiles and apparmor-utils have been installed."
+fi
+
+sudo aa-enforce /etc/apparmor.d/*
+
+#Changing 022 to 027 UMASK Value
+
+sed -i 's/UMASK.*/UMASK            027/' /etc/login.defs
+
+#Changing the Pass Max Days value 
+
+sed -i 's/PASS_MAX_DAYS.*/PASS_MAX_DAYS   120/' /etc/login.defs
+
+#Changing the Pass_Min Days Value
+
+sed -i 's/PASS_MIN_DAYS.*/PASS_MIN_DAYS   30/' /etc/login.defs
+
+#Put SHA_CRYPT_MAX_ROUNDS and SHA_CRYPT_MIN_ROUNDS Value 5000 to Any
+
+echo "SHA_CRYPT_MAX_ROUNDS 88888888" >> /etc/login.defs
+
+echo "SHA_CRYPT_MIN_ROUNDS 88888888" >> /etc/login.defs
+
+#Set the Password Expiry
+
+chage -M 150 $(whoami)
+
+chage -m 6 $(whoami)
+
+chage -E 2023-06-05 $(whoami)
+
+chage -I 8 $(whoami)
+
+chage -l $(whoami)
+
+useradd -D -f 30
+
+chage --inactive 30 $(whoami)
+
+#Remove DHCP Installed, if it installed
+
+sudo DEBIAN_FRONTEND=noninteractive apt purge isc-dhcp-server -y
+
+#Remove Telnet installed, if it installed 
+
+sudo DEBIAN_FRONTEND=noninteractive apt purge telnet -y
+
+#Run the following command to remove the rsync package
+
+sudo DEBIAN_FRONTEND=noninteractive apt purge rsync -y
+
+#Ensure rsyslog is installed. 
+
+#sudo DEBIAN_FRONTEND=noninteractive apt install rsyslog -y
  
 echo "GRUB_CMDLINE_LINUX="audit=1"" >> /etc/default/grub
 
 update-grub
 
-echo "=============== + Disabling cramfs, freevxfs, jffs2, hfs, hfsplus, udf + ================="
+#Disabling cramfs, freevxfs, jffs2, hfs, hfsplus, udf
 
 sudo cat <<EOF > /etc/modprobe.d/cramfs.conf
 install cramfs /bin/true
@@ -382,7 +336,7 @@ EOF
 
 chmod +x /etc/modprobe.d/usb_storage.conf
 
-echo "========================= + Install auditd + ====================="
+#Installat auditd
 
 #sudo DEBIAN_FRONTEND=noninteractive apt install auditd audispd-plugins -y
 
@@ -398,7 +352,7 @@ echo "Authorized uses only. All activity may be monitored and reported." > /etc/
 
 echo "Authorized uses only. All activity may be monitored and reported." > /etc/issue.net
 
-echo "======================= + Ensure packet redirect sending is disabled. + =================================" 
+#Ensure packet redirect sending is disabled. 
 
 echo "net.ipv4.conf.all.send_redirects = 0" >> /etc/sysctl.conf
 
@@ -410,7 +364,7 @@ sysctl -w net.ipv4.conf.default.send_redirects=0
 
 sysctl -w net.ipv4.route.flush=1
 
-echo "================ + Ensure source routed packets are not accepted + ================="
+#Ensure source routed packets are not accepted
 
 echo "net.ipv4.conf.all.accept_source_route = 0" >> /etc/sysctl.conf
 
@@ -432,7 +386,7 @@ sysctl -w net.ipv6.conf.default.accept_source_route=0
 
 sysctl -w net.ipv6.route.flush=1
 
-echo "============ + Ensure ICMP redirects are not accepted. + ============="
+#Ensure ICMP redirects are not accepted. 
 
 echo "net.ipv4.conf.all.accept_redirects = 0" >> /etc/sysctl.conf
 
@@ -454,7 +408,7 @@ sysctl -w net.ipv6.conf.default.accept_redirects=0
 
 sysctl -w net.ipv6.route.flush=1
 
-echo "================= + Ensure secure ICMP redirects are not accepted. + ==================="
+#Ensure secure ICMP redirects are not accepted.
 
 echo "net.ipv4.conf.all.secure_redirects = 0" >> /etc/sysctl.conf
 
@@ -466,7 +420,7 @@ sysctl -w net.ipv4.conf.default.secure_redirects=0
 
 sysctl -w net.ipv4.route.flush=1
 
-echo "============ + Ensure suspicious packets are logged + ============="
+#Ensure suspicious packets are logged 
 
 echo "net.ipv4.conf.all.log_martians = 1" >> /etc/sysctl.conf
 
@@ -478,7 +432,7 @@ sysctl -w net.ipv4.conf.default.log_martians=1
 
 sysctl -w net.ipv4.route.flush=1
 
-echo "============ + Ensure broadcast ICMP requests are ignored. + ============="
+#Ensure broadcast ICMP requests are ignored. 
 
 echo "net.ipv4.icmp_echo_ignore_broadcasts = 1" >> /etc/sysctl.conf
 
@@ -486,7 +440,7 @@ sysctl -w net.ipv4.icmp_echo_ignore_broadcasts=1
 
 sysctl -w net.ipv4.route.flush=1
 
-echo "=========== + Ensure bogus ICMP responses are ignored + =========="
+#Ensure bogus ICMP responses are ignored
 
 echo "net.ipv4.icmp_ignore_bogus_error_responses = 1" >> /etc/sysctl.conf
 
@@ -494,7 +448,7 @@ sysctl -w net.ipv4.icmp_ignore_bogus_error_responses=1
 
 sysctl -w net.ipv4.route.flush=1
 
-echo "=========== + Ensure Reverse Path Filtering is enabled. + ============"
+#Ensure Reverse Path Filtering is enabled.
 
 echo "net.ipv4.conf.all.rp_filter = 1" >> /etc/sysctl.conf
 
@@ -506,7 +460,7 @@ sysctl -w net.ipv4.conf.default.rp_filter=1
 
 sysctl -w net.ipv4.route.flush=1
 
-echo "=========== + Ensure TCP SYN Cookies is enabled. + ============"
+#Ensure TCP SYN Cookies is enabled. 
 
 echo "net.ipv4.tcp_syncookies = 1" >> /etc/sysctl.conf
 
@@ -514,7 +468,7 @@ sysctl -w net.ipv4.tcp_syncookies=1
 
 sysctl -w net.ipv4.route.flush=1
 
-echo "====================== + Ensure IPv6 router advertisements are not accepted. + ========================="
+#Ensure IPv6 router advertisements are not accepted. 
 
 echo "net.ipv6.conf.all.accept_ra = 0" >> /etc/sysctl.conf
 
@@ -530,7 +484,7 @@ cp /etc/audit/auditd.conf /etc/audit/auditd_backup_file.conf
 
 echo "max_log_file_action = keep_logs" >> /etc/audit/auditd.conf
 
-echo "====================== + Ensure core dumps are restricted + ======================"
+Ensure core dumps are restricted
 
 echo "* hard core 0" >> /etc/security/limits.conf
 
@@ -538,21 +492,21 @@ echo "fs.suid_dumpable = 0" >> /etc/sysctl.conf
 
 sysctl -w fs.suid_dumpable=0
 
-echo "================== + Ensure address space layout randomization (ASLR) is enabled. + =============="
+#Ensure address space layout randomization (ASLR) is enabled. 
 
 echo "kernel.randomize_va_space = 2" >> /etc/sysctl.conf
 
 sysctl -w kernel.randomize_va_space=2
 
-#echo "========================= + Set your root password below + ======================"
+#Set your root password below 
 
-#passwd root
+passwd root
 
-echo "================ + Ensure authentication required for single user mode + =================="
+#Ensure authentication required for single user mode 
 
 echo "-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change | -a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change | -a always,exit -F arch=b64 -S clock_settime -k time-change -a always,exit -F arch=b32 -S clock_settime -k time-change | -w /etc/localtime -p wa -k time-change" >> /etc/audit/rules.d/audit.rules
 
-echo "========================== + Installation of FirewallD And Adding the rules + =============================="
+#Installation of FirewallD And Adding the rules 
 
 #sudo DEBIAN_FRONTEND=noninteractive apt install firewalld -y
 
@@ -588,7 +542,7 @@ firewall-cmd --add-rich-rule=rule family="ipv6" drop --permanent
 
 sudo firewall-cmd --reload
 
-echo "====================== +  To install the libpam-pwquality module + =========================="
+#To install the libpam-pwquality module + =========================="
 
 #sudo DEBIAN_FRONTEND=noninteractive apt install libpam-pwquality -y
 
@@ -612,7 +566,7 @@ echo "ocredit = -1" >> /etc/security/pwquality.conf
 
 echo "lcredit = -1" >> /etc/security/pwquality.conf
 
-#echo "====================== + Ensure lockout for failed password attempts is configured + ==================="
+#Ensure lockout for failed password attempts is configured 
 
 #cp /etc/pam.d/common-auth /etc/pam.d/common-auth_backupfile
 
@@ -628,55 +582,55 @@ echo "lcredit = -1" >> /etc/security/pwquality.conf
 
 #sudo pam_tally2
 
-#echo "================= + Ensure permissions on /etc/motd are configured + ================"
+#Ensure permissions on /etc/motd are configured
 
 #chown root:root /etc/motd
 
 #chmod u-x,go-wx /etc/motd
 
-echo "========= + Ensure sudo commands use pty. + =========="
+#Ensure sudo commands use pty.
 
 cp /etc/sudoers /etc/sudoers_backupfile
 
 echo "Defaults use_pty" >> /etc/sudoers
 
-echo "======== + Ensure sudo log file exists + =========="
+#Ensure sudo log file exists 
 
 echo "Defaults logfile="/home/sudo.log"" >> /etc/sudoers
 
-#echo "============ + Ensure default user shell timeout is 900 seconds or less. + ============="
+#Ensure default user shell timeout is 900 seconds or less.
 
 #cp /etc/profile /etc/profile_backupfile
 
 #echo "readonly TMOUT=900 ; export TMOUT" >> /etc/profile
 
-echo "============ + Ensure permissions on /etc/passwd- are configured + ================="
+#Ensure permissions on /etc/passwd- are configured
 
 chown root:root /etc/passwd- 
 chmod u-x,go-rwx /etc/passwd-
 
-echo "================= + Ensure permissions on /etc/group- are configured. + ===================="
+#Ensure permissions on /etc/group- are configured. 
 
 chown root:root /etc/group- 
 chmod u-x,go-rwx /etc/group-
 
-echo "================= + Ensure permissions on bootloader config are configured + =================="
+#Ensure permissions on bootloader config are configured
 
 chown root:root /boot/grub/grub.cfg
 
 chmod og-rwx /boot/grub/grub.cfg
 
-echo "================= + Ensure permissions on all logfiles are configured. + ====================="
+#Ensure permissions on all logfiles are configured. 
 
 sudo find /var/log -type f -exec chmod g-wx,o-rwx "{}" + -o -type d -exec chmod g-w,o-rwx "{}" +
 
-echo "================== + Ensure only strong MAC algorithms are used. + ==================="
+#Ensure only strong MAC algorithms are used.
 
 echo "Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr" >> /etc/ssh/sshd_config
 
 echo "MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256" >> /etc/ssh/sshd_config
 
-echo "===================== + Again Perform Update and Upgrade At the end of the script + ====================="
+#Again Perform Update and Upgrade At the end of the script 
 
 sudo apt update -y
 
