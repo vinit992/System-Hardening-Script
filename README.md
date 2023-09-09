@@ -7,20 +7,20 @@ This script is designed to enhance the security of an Ubuntu system by implement
 # Features
 This script performs a number of hardening measures on an Ubuntu server. The steps performed by the script are:
 
-  Update the system to the latest security patches
-  Disable unnecessary services like dccp, sctp, tipc, rds, usb storage, core dumps, cramfs, freevxfs, jffs2, hfs, hfsplus, udf, etc.
-  Configure firewallD rules to restrict access to the server
-  Install and configure AppArmor, rkhunter, aide, apt-show-versions, automation tool cfEngine, sysstat, Accounting Process acct, auditd, etc.
-  Enable SSH key-based authentication and make changes in the sshd_config files to restrict access through ssh
-  Set a strong password for the root user and also set the expiry of password of host
-  Add the Banner also To Access the Authorized uses only
-  Ensure packet redirect sending is disabled
-  Ensure source routed packets are not accepted
-  Ensure ICMP and Secure ICMP redirects are not accepted, Ensure broadcast ICMP requests are ignored, Ensure bogus ICMP responses are ignored
-  Ensure suspicious packets are logged, 
-  Ensure Reverse Path Filtering is enabled, 
-  Ensure TCP SYN Cookies is enabled, Ensure IPv6 router advertisements are not accepted
-  Ensure permissions on /etc/passwd-, /etc/group-, bootloader config, all logfiles are configured
+  - **Update the system to the latest security patches
+  - **Disable unnecessary services like dccp, sctp, tipc, rds, usb storage, core dumps, cramfs, freevxfs, jffs2, hfs, hfsplus, udf, etc.
+  - **Configure firewallD rules to restrict access to the server
+  - **Install and configure AppArmor, rkhunter, aide, apt-show-versions, automation tool cfEngine, sysstat, Accounting Process acct, auditd, etc.
+  - **Enable SSH key-based authentication and make changes in the sshd_config files to restrict access through ssh
+  - **Set a strong password for the root user and also set the expiry of password of host
+  - **Add the Banner also To Access the Authorized uses only
+  - **Ensure packet redirect sending is disabled
+  - **Ensure source routed packets are not accepted
+  - **Ensure ICMP and Secure ICMP redirects are not accepted, Ensure broadcast ICMP requests are ignored, Ensure bogus ICMP responses are ignored
+  - **Ensure suspicious packets are logged, 
+  - **Ensure Reverse Path Filtering is enabled, 
+  - **Ensure TCP SYN Cookies is enabled, Ensure IPv6 router advertisements are not accepted
+  - **Ensure permissions on /etc/passwd-, /etc/group-, bootloader config, all logfiles are configured
 
   This Ubuntu hardening script follows industry-recognized security standards and guidelines to enhance system security. The script aligns with the following security standards:
 
@@ -56,5 +56,5 @@ Follow these steps to run the Ubuntu hardening script:
 
 1. **Clone the Repository:**
    ```shell
-   git clone https://github.com/yourusername/your-repo.git
+   git clone https://github.com/vinit992/System-Hardening-Script.git
 
