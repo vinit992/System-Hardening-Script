@@ -272,15 +272,42 @@ chage --inactive 30 $(whoami)
 
 #Remove DHCP Installed, if it installed
 
-sudo DEBIAN_FRONTEND=noninteractive apt purge isc-dhcp-server -y
+#sudo DEBIAN_FRONTEND=noninteractive apt purge isc-dhcp-server -y
+
+# Check if isc-dhcp-server package is installed
+if dpkg -l | grep -q "ii  isc-dhcp-server"; then
+    echo "isc-dhcp-server is installed. Purging..."
+    sudo DEBIAN_FRONTEND=noninteractive apt purge isc-dhcp-server -y
+    echo "Package purged successfully."
+else
+    echo "isc-dhcp-server is not installed."
+fi
 
 #Remove Telnet installed, if it installed 
 
-sudo DEBIAN_FRONTEND=noninteractive apt purge telnet -y
+#sudo DEBIAN_FRONTEND=noninteractive apt purge telnet -y
+
+# Check if telnet package is installed
+if dpkg -l | grep -q "ii  telnet"; then
+    echo "telnet is installed. Purging..."
+    sudo DEBIAN_FRONTEND=noninteractive apt purge telnet -y
+    echo "Package purged successfully."
+else
+    echo "telnet is not installed."
+fi
 
 #Run the following command to remove the rsync package
 
-sudo DEBIAN_FRONTEND=noninteractive apt purge rsync -y
+#sudo DEBIAN_FRONTEND=noninteractive apt purge rsync -y
+
+# Check if rsync package is installed
+if dpkg -l | grep -q "ii  rsync"; then
+    echo "rsync is installed. Purging..."
+    sudo DEBIAN_FRONTEND=noninteractive apt purge rsync -y
+    echo "Package purged successfully."
+else
+    echo "rsync is not installed."
+fi
 
 #Ensure rsyslog is installed. 
 
