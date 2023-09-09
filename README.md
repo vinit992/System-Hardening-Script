@@ -1,10 +1,10 @@
 # System-Hardening-Script
 # Ubuntu Hardening Script 
 
-## Description
+# Description
 This script is designed to enhance the security of an Ubuntu system by implementing various hardening measures. It automates the process of configuring and securing the system to reduce vulnerabilities and potential security risks.
 
-## Features
+# Features
 This script performs a number of hardening measures on an Ubuntu server. The steps performed by the script are:
 
   Update the system to the latest security patches
@@ -30,7 +30,7 @@ This script performs a number of hardening measures on an Ubuntu server. The ste
 
 Please note that this script can be customized to meet specific compliance needs based on your organization's requirements.
 
-## Usage
+# Usage
 1. [Provide step-by-step instructions on how to use your script]
 2. [Include any prerequisites or dependencies]
 3. [Provide examples of command usage]
