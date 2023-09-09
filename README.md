@@ -31,6 +31,30 @@ This script performs a number of hardening measures on an Ubuntu server. The ste
 Please note that this script can be customized to meet specific compliance needs based on your organization's requirements.
 
 # Usage
-1. [Provide step-by-step instructions on how to use your script]
-2. [Include any prerequisites or dependencies]
-3. [Provide examples of command usage]
+
+### Prerequisites
+
+Before running the Ubuntu hardening script, ensure that you have the following prerequisites in place:
+
+- **A Fresh Ubuntu Installation:** This script is intended for use on a clean Ubuntu system. Make sure you have a fresh installation to avoid conflicts with existing configurations.
+
+- **Root or Sudo Access:** You should have root access or sudo privileges on the target system to execute the script effectively.
+
+- **Internet Connectivity:** Ensure that the system has internet connectivity to download necessary packages and updates during the hardening process.
+
+### Dependencies
+
+The script leverages the following tools to perform system assessments and security improvements:
+
+- **Lynis:** We utilize Lynis, an open-source security auditing tool, to analyze the system's security posture and suggest improvements. You can learn more about Lynis [here](https://cisofy.com/lynis/).
+
+- **Wazuh Agent:** Wazuh is an open-source security monitoring platform. The Wazuh agent is used to enhance security monitoring and threat detection capabilities. More information about Wazuh can be found [here](https://wazuh.com/).
+
+### Running the Script
+
+Follow these steps to run the Ubuntu hardening script:
+
+1. **Clone the Repository:**
+   ```shell
+   git clone https://github.com/yourusername/your-repo.git
+
