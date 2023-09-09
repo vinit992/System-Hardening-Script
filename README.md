@@ -62,11 +62,11 @@ Follow these steps to run the Ubuntu hardening script:
    ```shell
    cd System-Hardening-Script
 
-4. Provide the executable Permision to the Script:
+3. Provide the executable Permision to the Script:
    ```shell
    chmod +x Hardening.sh
    
-6. Execute the Script:
+4. Execute the Script:
    ```shell
    ./Hardening.sh
   
