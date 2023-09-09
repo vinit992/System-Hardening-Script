@@ -59,9 +59,12 @@ Follow these steps to run the Ubuntu hardening script:
    git clone https://github.com/vinit992/System-Hardening-Script.git
 
 2. Navigate to the Script Directory:
-  cd System-Hardening-Script
-  
-3. Execute the Script:
+   cd System-Hardening-Script
+
+3. Provide the executable Permision to the Script:
+   chmod +x Hardening.sh
+   
+4. Execute the Script:
   ./Hardening.sh
   
 The script may prompt you for specific configuration options or provide recommendations based on Lynis and Wazuh assessments. Follow the on-screen instructions to complete the hardening process.
