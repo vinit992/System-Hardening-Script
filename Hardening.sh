@@ -569,9 +569,7 @@ firewall-cmd --add-rich-rule=rule family="ipv6" drop --permanent
 
 sudo firewall-cmd --reload
 
-#To install the libpam-pwquality module + =========================="
-
-#sudo DEBIAN_FRONTEND=noninteractive apt install libpam-pwquality -y
+#To install the libpam-pwquality module"
 
 if dpkg -l | grep -q 'ii  libpam-pwquality'; then
     echo "libpam-pwquality is already installed."
